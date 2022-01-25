@@ -24,7 +24,7 @@
           <div class="list-group list-group-flush">
             <a
               href="/dashboard.html"
-              class="list-group-item list-group-item-action active"
+              class="list-group-item list-group-item-action"
             >
               Dashboard
             </a>
