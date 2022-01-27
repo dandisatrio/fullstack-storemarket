@@ -80,8 +80,16 @@
                 </div>
                 </li>
                 <li class="nav-item">
-                <a href="#" class="nav-link d-inline-block mt-2">
-                    <img src="/images/icon-cart-empty.svg" />
+                <a href="{{ route('cart') }}" class="nav-link d-inline-block mt-2">
+                    @php
+                        $carts = \App\Models\Cart::where('users_id', Auth::user()->id)->count();
+                    @endphp
+                    @if ($carts > 0)
+                        <img src="/images/icon-cart-empty.svg" />
+                        <div class="card-badge">{{ $carts }}</div>
+                    @else
+                        <img src="/images/icon-cart-empty.svg" />
+                    @endif
                 </a>
                 </li>
             </ul>

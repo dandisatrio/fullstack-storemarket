@@ -39,6 +39,7 @@
                 </tr>
               </thead>
               <tbody>
+                @php $totalPrice = 0 @endphp
                 @foreach ($carts as $cart)
                   <tr>
                     <td style="width: 25%;">
@@ -68,6 +69,7 @@
                       </form>
                     </td>
                   </tr>
+                  @php $totalPrice += $cart->product->price @endphp
                 @endforeach
               </tbody>
             </table>
@@ -81,118 +83,164 @@
             <h2 class="mb-4">Shipping Details</h2>
           </div>
         </div>
-        <div class="row mb-2" data-aos="fade-up" data-aos-delay="200">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="addressOne">Address 1</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="addressOne" 
-                name="addressOne" 
-                value=""
-              >
+        <form action="" id="locations">
+          <div class="row mb-2" data-aos="fade-up" data-aos-delay="200">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="address_one">Address 1</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="address_one" 
+                  name="address_one" 
+                  value=""
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="address_two">Address 2</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address_two"
+                  name="address_two"
+                  value=""
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="provinces_id">Province</label>
+                <select name="provinces_id" id="provinces_id" class="form-select" v-if="provinces" v-model="provinces_id">
+                  <option v-for="province in provinces" :value="province.id">@{{ province.name }}</option>
+                </select>
+                <select v-else class="form-select"></select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="regencies_id">Regency</label>
+                <select name="regencies_id" id="regencies_id" class="form-select" v-if="regencies" v-model="provinces_id">
+                  <option v-for="regency in regencies" :value="regency.id">@{{ regency.name }}</option>
+                </select>
+                <select v-else class="form-select"></select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="zip_code">Postal Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="zip_code"
+                  name="zip_code"
+                  value=""
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="country">Country</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="country"
+                  name="country"
+                  value=""
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="phone_number">Mobile Phone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone_number"
+                  name="phone_number"
+                  value=""
+                />
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="addressTwo">Address 2</label>
-              <input
-                type="text"
-                class="form-control"
-                id="addressTwo"
-                name="addressTwo"
-                value=""
-              />
+          <div class="row" data-aos="fade-up" data-aos-delay="250">
+            <div class="col-12">
+              <hr>
+            </div>
+            <div class="col-12">
+              <h2 class="mb-2">Payment Informations</h2>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="province">Province</label>
-              <select name="province" id="province" class="form-select">
-                <option selected>Select Province</option>
-                <option value="West Java">West Java</option>
-              </select>
+          <div class="row" data-aos="fade-up" data-aos-delay="300">
+            <div class="col-4 col-md-2">
+              <div class="product-title">Rp. 0</div>
+              <div class="product-subtitle">Country tax</div>
+            </div>
+            <div class="col-4 col-md-3">
+              <div class="product-title">Rp. 0</div>
+              <div class="product-subtitle">Product Insurance</div>
+            </div>
+            <div class="col-4 col-md-2">
+              <div class="product-title">Rp. 0</div>
+              <div class="product-subtitle">Ship to Jakarta</div>
+            </div>
+            <div class="col-4 col-md-2">
+              <div class="product-title text-success">Rp. {{ number_format($totalPrice, 0, ',', '.' ?? 0) }}</div>
+              <div class="product-subtitle">Total</div>
+            </div>
+            <div class="col-8 col-md-3">
+              <a href="/success.html" class="btn btn-success mt-4 px-4 d-grid gap-2">
+                Checkout Now
+              </a>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="city">City</label>
-              <select name="city" id="city" class="form-select">
-                <option selected>Select City</option>
-                <option value="Bandung">Bandung</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="postalCode">Postal Code</label>
-              <input
-                type="text"
-                class="form-control"
-                id="postalCode"
-                name="postalCode"
-                value=""
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="country">Country</label>
-              <input
-                type="text"
-                class="form-control"
-                id="country"
-                name="country"
-                value=""
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="mobile">Mobile Phone</label>
-              <input
-                type="text"
-                class="form-control"
-                id="mobile"
-                name="mobile"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row" data-aos="fade-up" data-aos-delay="250">
-          <div class="col-12">
-            <hr>
-          </div>
-          <div class="col-12">
-            <h2 class="mb-2">Payment Informations</h2>
-          </div>
-        </div>
-        <div class="row" data-aos="fade-up" data-aos-delay="300">
-          <div class="col-4 col-md-2">
-            <div class="product-title">Rp. 15000</div>
-            <div class="product-subtitle">Country tax</div>
-          </div>
-          <div class="col-4 col-md-3">
-            <div class="product-title">Rp. 30000</div>
-            <div class="product-subtitle">Product Insurance</div>
-          </div>
-          <div class="col-4 col-md-2">
-            <div class="product-title">Rp. 50000</div>
-            <div class="product-subtitle">Ship to Jakarta</div>
-          </div>
-          <div class="col-4 col-md-2">
-            <div class="product-title text-success">Rp. 95000</div>
-            <div class="product-subtitle">Total</div>
-          </div>
-          <div class="col-8 col-md-3">
-            <a href="/success.html" class="btn btn-success mt-4 px-4 d-grid gap-2">
-              Checkout Now
-            </a>
-          </div>
-        </div>
+        </form>
       </div>
     </section>
 </div>
 @endsection
+
+@push('addon-script')
+<script src="/vendor/vue/vue.js"></script>
+<script src="https://unpkg.com/vue-toasted"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  var locations = new Vue({
+    el: "#locations",
+    mounted() {
+      AOS.init();
+      this.getProvincesData();
+    },
+    data: {
+      provinces: null,
+      regencies: null,
+      provinces_id: null,
+      regencies_id: null,
+      
+    },
+    methods: {
+      getProvincesData() {
+        var self = this;
+        axios.get('{{ route('api-provinces') }}')
+          .then(function(response) {
+            self.provinces = response.data;
+          })
+      },
+      getRegenciesData() {
+        var self = this;
+        axios.get('{{ url('api/regencies') }}/' + self.provinces_id)
+          .then(function(response) {
+            self.regencies = response.data;
+        })
+      }
+    },
+    watch: {
+      provinces_id: function(val, oldVal) {
+        this.regencies_id = null;
+        this.getRegenciesData();
+      }
+    },
+  });
+</script>
+@endpush
