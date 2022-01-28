@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Midtrans\Snap;
 use Midtrans\Config;
+use Midtrans\Notification;
 
 class CheckoutController extends Controller
 {
@@ -46,7 +47,7 @@ class CheckoutController extends Controller
                 'resi' => '',
                 'code' => $trx
             ]);
-        }
+        };
 
         // Delete cart data
         Cart::where('users_id', Auth::user()->id)->delete();
@@ -79,14 +80,68 @@ class CheckoutController extends Controller
             
             // Redirect to Snap Payment Page
             return redirect($paymentUrl);
-          }
-          catch (Exception $e) {
+        }
+        catch (Exception $e) {
             echo $e->getMessage();
-          }
-    }
+        }
+    }    
 
     public function callback(Request $request)
     {
-        return view('checkout');
+        // Set config midtrans
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
+
+        // Instance midtrans notif
+        $notification = new Notification();
+
+        // Assignto variable for easing code
+        $status = $notification->transaction_status;
+        $type = $notification->payment_type;
+        $fraud = $notification->fraud_status;
+        $order_id = $notification->order_id;
+
+        // Search transaction sort id
+        $transaction = Transaction::findOrFail($order_id);
+        
+        // Handle notif status
+        if($status == 'capture') {
+            if($type == 'credit_card') {
+                if($fraud == 'challenge') {
+                    $transaction->status = 'PENDING';
+                }
+                else {
+                    $transaction->status = 'SUCCESS';
+                }
+            }
+        }
+
+        else if($status == 'settlement'){
+            $transaction->status = 'SUCCESS';
+        }
+
+        else if($status == 'pending'){
+            $transaction->status = 'PENDING';
+        }
+
+        else if($status == 'deny'){
+            $transaction->status = 'CANCELLED';
+        }
+
+        else if($status == 'expire'){
+            $transaction->status = 'CANCELLED';
+        }
+
+        else if($status == 'cancel'){
+            $transaction->status = 'CANCELLED';
+        }
+
+        // Save transaction
+        $transaction->save();
+
+        
     }
+
 }
