@@ -83,7 +83,9 @@
             <h2 class="mb-4">Shipping Details</h2>
           </div>
         </div>
-        <form action="" id="locations">
+        <form action="{{ route('checkout') }}" id="locations" enctype="multipart/form-data" method="POST">
+          @csrf
+          <input type="hidden" name="total_price" value="{{ $totalPrice }}">
           <div class="row mb-2" data-aos="fade-up" data-aos-delay="200">
             <div class="col-md-6">
               <div class="form-group">
@@ -112,7 +114,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="provinces_id">Province</label>
-                <select name="provinces_id" id="provinces_id" class="form-select" v-if="provinces" v-model="provinces_id">
+                <select name="provinces_id" id="provinces_id" class="form-select" v-model="provinces_id" v-if="provinces">
                   <option v-for="province in provinces" :value="province.id">@{{ province.name }}</option>
                 </select>
                 <select v-else class="form-select"></select>
@@ -121,8 +123,8 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="regencies_id">Regency</label>
-                <select name="regencies_id" id="regencies_id" class="form-select" v-if="regencies" v-model="provinces_id">
-                  <option v-for="regency in regencies" :value="regency.id">@{{ regency.name }}</option>
+                <select name="regencies_id" id="regencies_id" class="form-select" v-model="regencies_id" v-if="regencies">
+                  <option v-for="regency in regencies" :value="regency.id">@{{regency.name }}</option>
                 </select>
                 <select v-else class="form-select"></select>
               </div>
@@ -190,9 +192,9 @@
               <div class="product-subtitle">Total</div>
             </div>
             <div class="col-8 col-md-3">
-              <a href="/success.html" class="btn btn-success mt-4 px-4 d-grid gap-2">
+              <button type="submit" class="btn btn-success mt-4 px-4 d-grid gap-2">
                 Checkout Now
-              </a>
+              </button>
             </div>
           </div>
         </form>
