@@ -25,7 +25,7 @@
           <div class="list-group list-group-flush">
             <a
               href="{{ route('admin-dashboard') }}"
-              class="list-group-item list-group-item-action"
+              class="list-group-item list-group-item-action {{ (request()->is('admin')) ? 'active' : ''}}"
             >
               Dashboard
             </a>
@@ -46,13 +46,7 @@
               class="list-group-item list-group-item-action {{ (request()->is('admin/category*')) ? 'active' : ''}}"
             >
               Categories
-            </a>            
-            <a
-              href="#"
-              class="list-group-item list-group-item-action"
-            >
-              Transactions
-            </a>            
+            </a>          
             <a
               href="{{ route('user.index') }}"
               class="list-group-item list-group-item-action {{ (request()->is('admin/user*')) ? 'active' : ''}}"
@@ -60,11 +54,16 @@
               Users
             </a>            
             <a
-              href="/index.html"
+              href="{{ route('logout') }}"
+              onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();"
               class="list-group-item list-group-item-action"
             >
               Sign Out
             </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+          </form>
           </div>
         </div>
 
@@ -109,10 +108,16 @@
                         alt=""
                         class="rounded-circle me-2 profile-picture"
                       />
-                      Hi, Bambang
+                      Hi, {{ Auth::user()->name }}
                     </a>
                     <div class="dropdown-menu">
-                      <a href="/" class="dropdown-item">Logout</a>
+                      <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                          @csrf
+                      </form>
                     </div>
                   </li>
                 </ul>
@@ -120,11 +125,9 @@
                 <!-- Mobile Menu -->
                 <ul class="navbar-nav d-block d-lg-none">
                   <li class="nav-item">
-                    <a href="#" class="nav-link"> Hi, Bambang </a>
+                    <a href="#" class="nav-link"> Hi, {{ Auth::user()->name }} </a>
                   </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link d-inline-block"> Cart </a>
-                  </li>
+                  
                 </ul>
               </div>
             </div>
