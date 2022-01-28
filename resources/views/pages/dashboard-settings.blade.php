@@ -13,68 +13,76 @@
         <p class="dashboard-subtitle">Make store that profitable</p>
         </div>
         <div class="dashboard-content">
-        <div class="row">
-            <div class="col-12">
-            <form action="">
-                <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group mb-2">
-                        <label>Store Name</label>
-                        <input 
-                            type="text" 
-                            class="form-control"
-                        />
+            <div class="row">
+                <div class="col-12">
+                    <form action="{{ route('dashboard-settings-redirect', 'dashboard-settings-store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-2">
+                                        <label>Store Name</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control"
+                                            name="store_name"
+                                            value="{{ $user->store_name }}"
+                                        />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Category</label>
+                                            <select name="categories_id" class="form-select">
+                                                <option value="{{ $user->categories_id }}">Tidak diganti</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label>Store</label>
+                                            <p class="text-muted">Apakah anda juga ingin membuka toko?</p>
+                                            <div class="form-check form-check-inline">
+                                                <input 
+                                                type="radio" 
+                                                class="form-check-input"
+                                                name="store_status"
+                                                id="openStoreTrue"
+                                                value="1"
+                                                 {{ $user->store_status == 1 ? 'checked' : '' }}
+                                                >
+                                                <label for="openStoreTrue" class="form-check-label">Open</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input 
+                                                type="radio" 
+                                                class="form-check-input"
+                                                name="store_status"
+                                                id="openStoreFalse"
+                                                value="0"
+                                                {{ $user->store_status == 0 || $user->store_status == NULL ? 'checked' : '' }}
+                                                >
+                                                <label for="openStoreFalse" class="form-check-label">Temporary Close</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-end">
+                                    <button type="submit" class="btn btn-success px-5">
+                                    Save Now
+                                    </button>
+                                </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                        <label>Category</label>
-                        <select name="category" class="form-select">
-                            <option value="" disabled>Select Category</option>
-                        </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                        <label>Store</label>
-                        <p class="text-muted">Apakah anda juga ingin membuka toko?</p>
-                        <div class="form-check form-check-inline">
-                            <input 
-                            type="radio" 
-                            class="form-check-input"
-                            name="is_store_open"
-                            id="openStoreTrue"
-                            value="true"
-                            >
-                            <label for="openStoreTrue" class="custom-control-label">Open</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input 
-                            type="radio" 
-                            class="form-check-input"
-                            name="is_store_open"
-                            id="openStoreFalse"
-                            value="false"
-                            >
-                            <label for="openStoreFalse" class="custom-control-label">Temporary Close</label>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="row">
-                    <div class="col text-end">
-                        <button type="submit" class="btn btn-success px-5">
-                        Save Now
-                        </button>
-                    </div>
-                    </div>
+                    </form>
                 </div>
-                </div>
-            </form>
             </div>
-        </div>
         </div>
     </div>
 </div>
