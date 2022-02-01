@@ -53,7 +53,7 @@ You can now access the server at http://localhost:8000
 
 ## See You
 
-"Thanks for looking at my repository.
+"Thanks for looking at my repository and big thanks from Buildwith Angga.
 
 Have a nice day, don't forget to always be grateful."
 
