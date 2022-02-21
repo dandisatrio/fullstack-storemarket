@@ -37,7 +37,7 @@ Run the database migrations (**Set the database connection in .env before migrat
 
     php artisan migrate
 
-Run the database seeder and you're done
+Run the database seeder and you're done (Seeder not created)
 
     php artisan db:seed
     
